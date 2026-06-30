@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FocusBoard · Tokens</title>
+<style>
+  :root {
+    --bg: #08080a;
+    --bg-glow: rgba(255,138,76,.06);
+    --card: #121214;
+    --card-2: #18181b;
+    --line: #232227;
+    --line-soft: #1c1b1f;
+    --text: #f4f1ec;
+    --dim: #918b83;
+    --dim-2: #645f59;
+    --orange: #ff8a4c;
+    --orange-bright: #ffa066;
+    --orange-deep: #db5f24;
+    --glow: rgba(255,138,76,.30);
+    --c-input: #5b9dff;
+    --c-output: #ff8a4c;
+    --c-read: #2fd1a6;
+    --c-write: #b98cff;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", "Consolas", monospace;
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--sans);
+    background: radial-gradient(900px 500px at 88% -8%, var(--bg-glow), transparent 70%), var(--bg);
+    color: var(--text); padding: 26px 24px 48px; -webkit-font-smoothing: antialiased; line-height: 1.5;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  a { color: var(--orange); text-decoration: none; }
+
+  header { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
+  .logo { width: 13px; height: 13px; border-radius: 4px; background: linear-gradient(150deg, var(--orange-bright), var(--orange-deep));
+          box-shadow: 0 0 16px var(--glow); flex: none; }
+  header h1 { font-size: 13px; margin: 0; color: var(--dim); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
+  header .nav { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  header .nav a, button { font-size: 13px; color: var(--text); font-weight: 600; background: var(--card-2);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 13px; cursor: pointer; transition: .15s; font-family: var(--sans); }
+  header .nav a:hover, button:hover { border-color: var(--orange-deep); background: rgba(255,138,76,.07); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 13px; margin-bottom: 18px; }
+  .stat { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line); border-radius: 15px;
+          padding: 15px 17px; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+  .stat .label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--dim-2); font-weight: 600; }
+  .stat .val { font-size: 25px; font-weight: 700; margin-top: 7px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .stat .sub { font-size: 12px; color: var(--dim); margin-top: 3px; }
+
+  .card { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line); border-radius: 16px;
+          padding: 20px 22px; margin-bottom: 16px; box-shadow: 0 8px 28px rgba(0,0,0,.35); }
+  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--dim-2); margin: 0 0 16px; font-weight: 600; }
+
+  /* featured "this session" card */
+  .feature { border: 1px solid var(--orange-deep); background:
+      linear-gradient(180deg, rgba(255,138,76,.10), rgba(255,138,76,.02)); cursor: pointer; transition: .15s; }
+  .feature:hover { background: linear-gradient(180deg, rgba(255,138,76,.16), rgba(255,138,76,.04)); }
+  .feature .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--orange);
+                    text-transform: uppercase; letter-spacing: .08em; }
+  .feature .badge .live { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--glow); }
+  .feature .ftitle { font-size: 18px; font-weight: 650; margin: 9px 0 2px; letter-spacing: -.01em; }
+  .feature .fmeta { color: var(--dim); font-size: 12.5px; }
+  .feature .fnums { display: flex; gap: 26px; margin-top: 14px; align-items: baseline; }
+  .feature .fnum .n { font-size: 23px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .feature .fnum .n.cost { color: var(--orange); }
+  .feature .fnum .l { font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: .07em; }
+  .feature .go { float: right; color: var(--orange); font-weight: 600; font-size: 13px; }
+
+  /* twin bars */
+  .bars { display: grid; gap: 16px; }
+  .barrow .barlabel { font-size: 13px; margin-bottom: 8px; display: flex; justify-content: space-between; font-weight: 500; }
+  .barlabel .dim { color: var(--dim); font-variant-numeric: tabular-nums; font-family: var(--mono); }
+  .bar { display: flex; height: 30px; border-radius: 9px; overflow: hidden; background: #060607; border: 1px solid var(--line-soft); }
+  .seg { height: 100%; min-width: 0; transition: width .5s cubic-bezier(.2,.8,.2,1); }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 15px; font-size: 12.5px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--dim); }
+  .ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .insight { margin-top: 15px; font-size: 13.5px; color: var(--dim); line-height: 1.6;
+             border-left: 2px solid var(--orange-deep); padding-left: 14px; }
+  .insight b { color: var(--text); font-weight: 600; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: right; color: var(--dim-2); font-weight: 600; font-size: 10.5px; text-transform: uppercase;
+       letter-spacing: .08em; padding: 7px 11px; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+  td { padding: 10px 11px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: none; }
+  td.model, td.q { font-family: var(--mono); font-size: 12.5px; }
+  .cost { color: var(--orange); font-weight: 700; }
+
+  /* session list */
+  .slist { display: flex; flex-direction: column; }
+  .srow { display: flex; align-items: center; gap: 14px; padding: 13px 6px; border-bottom: 1px solid var(--line-soft);
+          cursor: pointer; transition: .12s; border-radius: 8px; }
+  .srow:last-child { border-bottom: none; }
+  .srow:hover { background: rgba(255,138,76,.05); }
+  .srow .smark { width: 3px; align-self: stretch; border-radius: 3px; background: transparent; flex: none; }
+  .srow.cur .smark { background: var(--orange); }
+  .srow .sbody { flex: 1; min-width: 0; }
+  .srow .stitle { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .srow .ssub { font-size: 12px; color: var(--dim-2); font-family: var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .srow .stok { color: var(--dim); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .srow .scost { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--orange); min-width: 64px; text-align: right; }
+
+  /* session detail header */
+  .dhead { display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
+  .dhead .dtitle { font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+  .dhead .dsub { color: var(--dim); font-size: 13px; margin-top: 6px; font-family: var(--mono); word-break: break-all; }
+  .dhead .dnums { margin-left: auto; display: flex; gap: 26px; }
+  .dnum .n { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .dnum .n.cost { color: var(--orange); }
+  .dnum .l { font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: .07em; }
+  .back { font-size: 13px; color: var(--dim); display: inline-flex; gap: 6px; margin-bottom: 16px; }
+  .back:hover { color: var(--orange); }
+
+  .loading, .empty { color: var(--dim-2); font-size: 14px; padding: 22px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="logo"></span>
+    <h1>FocusBoard · Token X-ray</h1>
+    <div class="nav">
+      <a href="/">← Live board</a>
+      <button id="refresh">↻ Rescan</button>
+    </div>
+  </header>
+  <div id="view"><div class="loading">Scanning your transcripts…</div></div>
+</div>
+
+<script>
+const COLORS = { input: "var(--c-input)", output: "var(--c-output)", cache_read: "var(--c-read)", cache_write: "var(--c-write)" };
+const LABELS = { input: "fresh input", output: "output", cache_read: "cache read", cache_write: "cache write" };
+let DATA = null;
+
+function fmtTokens(n) {
+  if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
+  if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
+  return String(n);
+}
+function fmtMoney(n) {
+  if (n >= 100) return "$" + n.toFixed(0);
+  if (n >= 1) return "$" + n.toFixed(2);
+  return "$" + n.toFixed(3);
+}
+function totalTokens(b) { return b.input + b.output + b.cache_read + b.cache_write; }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function fmtDate(iso) {
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + ", " +
+           d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  } catch (e) { return "—"; }
+}
+
+function bar(parts) {
+  const sum = parts.reduce((a, p) => a + p.value, 0) || 1;
+  return `<div class="bar">${parts.map(p =>
+    `<div class="seg" style="width:${(p.value / sum * 100).toFixed(2)}%;background:${p.color}" title="${p.title}"></div>`).join("")}</div>`;
+}
+
+// twin bars + auto insight for any totals object
+function breakdownBlock(t) {
+  const tok = totalTokens(t);
+  const kinds = ["input", "output", "cache_read", "cache_write"];
+  const tokenParts = kinds.map(k => ({ value: t[k], color: COLORS[k], title: `${LABELS[k]}: ${fmtTokens(t[k])}` }));
+  const costBy = { input: t.input * 5 / 1e6, output: t.output * 25 / 1e6, cache_read: t.cache_read * 0.5 / 1e6, cache_write: t.cache_write * 7 / 1e6 };
+  const costParts = kinds.map(k => ({ value: costBy[k], color: COLORS[k], title: `${LABELS[k]}: ${fmtMoney(costBy[k])}` }));
+  const top = Object.keys(costBy).reduce((a, b) => costBy[a] >= costBy[b] ? a : b);
+  const pct = k => (costBy[k] / (t.cost || 1) * 100).toFixed(0);
+  const readPct = (t.cache_read / (tok || 1) * 100).toFixed(0);
+  const lever = {
+    cache_read: `re-reading context every turn — long conversations re-send their whole history. The lever is <b>shorter sessions / clearing context more often</b>.`,
+    output: `the text the model generates. The lever is <b>shorter outputs</b> — terser answers, less verbose code.`,
+    cache_write: `writing context into the cache. The lever is <b>fewer brand-new long prompts</b> — reuse a warm session.`,
+    input: `fresh (uncached) input. The lever is <b>more caching</b> — keep prompts stable so they hit the cache.`,
+  };
+  return `
+    <div class="bars">
+      <div class="barrow"><div class="barlabel"><span>By token count</span><span class="dim">${fmtTokens(tok)} tokens</span></div>${bar(tokenParts)}</div>
+      <div class="barrow"><div class="barlabel"><span>By dollars spent</span><span class="dim">${fmtMoney(t.cost)}</span></div>${bar(costParts)}</div>
+    </div>
+    <div class="legend">
+      <span><i class="ldot" style="background:var(--c-input)"></i>fresh input</span>
+      <span><i class="ldot" style="background:var(--c-output)"></i>output</span>
+      <span><i class="ldot" style="background:var(--c-read)"></i>cache read (cheap)</span>
+      <span><i class="ldot" style="background:var(--c-write)"></i>cache write</span>
+    </div>
+    <div class="insight">Cache reads are <b>${readPct}%</b> of these tokens — the cheap repeated stuff. Biggest dollar line: <b>${LABELS[top]}</b> (~<b>${pct(top)}%</b>): ${lever[top]}</div>`;
+}
+
+function renderOverview() {
+  const d = DATA, t = d.totals, tok = totalTokens(t);
+  const cur = d.sessions.find(s => s.id === d.current_session);
+
+  let html = `
+    <div class="cards">
+      <div class="stat"><div class="label">Total spend</div><div class="val" style="color:var(--orange)">${fmtMoney(t.cost)}</div><div class="sub">est. at current rates</div></div>
+      <div class="stat"><div class="label">Total tokens</div><div class="val">${fmtTokens(tok)}</div><div class="sub">${d.sessions.length} sessions</div></div>
+      <div class="stat"><div class="label">Output</div><div class="val">${fmtTokens(t.output)}</div><div class="sub">the pricey part</div></div>
+      <div class="stat"><div class="label">Cache reads</div><div class="val">${fmtTokens(t.cache_read)}</div><div class="sub">${(t.cache_read / (tok || 1) * 100).toFixed(0)}% of tokens</div></div>
+    </div>`;
+
+  if (cur) {
+    const ct = cur.totals;
+    html += `
+      <div class="card feature" onclick="location.hash='#/s/${encodeURIComponent(cur.id)}'">
+        <span class="go">View breakdown →</span>
+        <div class="badge"><span class="live"></span>This session</div>
+        <div class="ftitle">${esc(cur.title)}</div>
+        <div class="fmeta">${esc(cur.project)} · ${fmtDate(cur.started)}</div>
+        <div class="fnums">
+          <div class="fnum"><div class="n cost">${fmtMoney(ct.cost)}</div><div class="l">spent</div></div>
+          <div class="fnum"><div class="n">${fmtTokens(totalTokens(ct))}</div><div class="l">tokens</div></div>
+          <div class="fnum"><div class="n">${fmtTokens(ct.output)}</div><div class="l">output</div></div>
+          <div class="fnum"><div class="n">${cur.turns.length}</div><div class="l">queries</div></div>
+        </div>
+      </div>`;
+  }
+
+  html += `<div class="card"><h2>Where it all goes — every session combined</h2>${breakdownBlock(t)}</div>`;
+
+  const models = d.by_model.filter(m => totalTokens(m) > 0);
+  html += `<div class="card"><h2>By model</h2>${models.length ? `
+    <table><thead><tr><th>Model</th><th>Output</th><th>Cache read</th><th>Total</th><th>Cost</th></tr></thead><tbody>${
+      models.map(m => `<tr><td class="model">${esc(m.model)}</td><td>${fmtTokens(m.output)}</td><td>${fmtTokens(m.cache_read)}</td><td>${fmtTokens(totalTokens(m))}</td><td class="cost">${fmtMoney(m.cost)}</td></tr>`).join("")
+    }</tbody></table>` : `<div class="empty">No usage found.</div>`}</div>`;
+
+  html += `<div class="card"><h2>All sessions — pick one to drill in</h2><div class="slist">${
+    d.sessions.map(s => `
+      <div class="srow ${s.id === d.current_session ? "cur" : ""}" onclick="location.hash='#/s/${encodeURIComponent(s.id)}'">
+        <span class="smark"></span>
+        <div class="sbody">
+          <div class="stitle">${esc(s.title)}</div>
+          <div class="ssub">${esc(s.project)} · ${fmtDate(s.started)}</div>
+        </div>
+        <span class="stok">${fmtTokens(totalTokens(s.totals))} tok</span>
+        <span class="scost">${fmtMoney(s.totals.cost)}</span>
+      </div>`).join("")
+  }</div></div>`;
+
+  document.getElementById("view").innerHTML = html;
+}
+
+function renderSession(id) {
+  const s = DATA.sessions.find(x => x.id === id);
+  if (!s) { document.getElementById("view").innerHTML = `<a class="back" href="#/">← Back</a><div class="empty">Session not found.</div>`; return; }
+  const t = s.totals;
+  const isCur = s.id === DATA.current_session;
+
+  let html = `<a class="back" href="#/">← All sessions</a>
+    <div class="card">
+      <div class="dhead">
+        <div>
+          ${isCur ? `<div class="badge" style="margin-bottom:8px;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--glow)"></span>This session</div>` : ""}
+          <h1 class="dtitle">${esc(s.title)}</h1>
+          <div class="dsub">${esc(s.project)} · ${fmtDate(s.started)} · ${esc(s.models.join(", ") || "—")}</div>
+        </div>
+        <div class="dnums">
+          <div class="dnum"><div class="n cost">${fmtMoney(t.cost)}</div><div class="l">spent</div></div>
+          <div class="dnum"><div class="n">${fmtTokens(totalTokens(t))}</div><div class="l">tokens</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card"><h2>Where this session's budget went</h2>${breakdownBlock(t)}</div>`;
+
+  html += `<div class="card"><h2>Priciest queries in this session</h2>${s.turns.length ? `
+    <table><thead><tr><th>Query</th><th>Output</th><th>Total</th><th>Cost</th></tr></thead><tbody>${
+      s.turns.map(tn => `<tr>
+        <td class="q" style="max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(tn.prompt)}</td>
+        <td>${fmtTokens(tn.totals.output)}</td><td>${fmtTokens(totalTokens(tn.totals))}</td><td class="cost">${fmtMoney(tn.totals.cost)}</td></tr>`).join("")
+    }</tbody></table>` : `<div class="empty">No individual queries captured.</div>`}</div>`;
+
+  document.getElementById("view").innerHTML = html;
+}
+
+function route() {
+  if (!DATA) return;
+  const h = location.hash;
+  const m = h.match(/^#\/s\/(.+)$/);
+  if (m) renderSession(decodeURIComponent(m[1]));
+  else renderOverview();
+}
+
+async function load() {
+  document.getElementById("view").innerHTML = '<div class="loading">Scanning your transcripts…</div>';
+  try {
+    const r = await fetch("/api/tokens");
+    DATA = await r.json();
+    route();
+  } catch (e) {
+    document.getElementById("view").innerHTML = '<div class="empty">Could not reach the server. Is it running?</div>';
+  }
+}
+window.addEventListener("hashchange", route);
+document.getElementById("refresh").addEventListener("click", load);
+load();
+</script>
+</body>
+</html>
