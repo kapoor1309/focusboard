@@ -36,7 +36,7 @@
   .wrap { max-width: 820px; margin: 0 auto; }
   a { color: var(--orange); text-decoration: none; }
 
-  header { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
+  header { display: flex; align-items: center; gap: 13px; margin-bottom: 18px; }
   .logo { width: 13px; height: 13px; border-radius: 4px; background: linear-gradient(150deg, var(--orange-bright), var(--orange-deep));
           box-shadow: 0 0 16px var(--glow); flex: none; }
   header h1 { font-size: 13px; margin: 0; color: var(--dim); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
@@ -44,6 +44,12 @@
   header .nav a, button { font-size: 13px; color: var(--text); font-weight: 600; background: var(--card-2);
     border: 1px solid var(--line); border-radius: 8px; padding: 6px 13px; cursor: pointer; transition: .15s; font-family: var(--sans); }
   header .nav a:hover, button:hover { border-color: var(--orange-deep); background: rgba(255,138,76,.07); }
+
+  /* tab switcher */
+  .tabs { display: inline-flex; gap: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 4px; margin-bottom: 20px; }
+  .tabs a { font-size: 13px; font-weight: 600; color: var(--dim); padding: 6px 16px; border-radius: 8px; transition: .15s; }
+  .tabs a.active { background: linear-gradient(180deg, var(--orange-bright), var(--orange-deep)); color: #160c05; }
+  .tabs a:not(.active):hover { color: var(--text); }
 
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 13px; margin-bottom: 18px; }
   .stat { background: linear-gradient(180deg, var(--card-2), var(--card)); border: 1px solid var(--line); border-radius: 15px;
@@ -56,13 +62,10 @@
           padding: 20px 22px; margin-bottom: 16px; box-shadow: 0 8px 28px rgba(0,0,0,.35); }
   h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--dim-2); margin: 0 0 16px; font-weight: 600; }
 
-  /* featured "this session" card */
-  .feature { border: 1px solid var(--orange-deep); background:
-      linear-gradient(180deg, rgba(255,138,76,.10), rgba(255,138,76,.02)); cursor: pointer; transition: .15s; }
+  .feature { border: 1px solid var(--orange-deep); background: linear-gradient(180deg, rgba(255,138,76,.10), rgba(255,138,76,.02)); cursor: pointer; transition: .15s; }
   .feature:hover { background: linear-gradient(180deg, rgba(255,138,76,.16), rgba(255,138,76,.04)); }
-  .feature .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--orange);
-                    text-transform: uppercase; letter-spacing: .08em; }
-  .feature .badge .live { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--glow); }
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: .08em; }
+  .badge .live { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--glow); }
   .feature .ftitle { font-size: 18px; font-weight: 650; margin: 9px 0 2px; letter-spacing: -.01em; }
   .feature .fmeta { color: var(--dim); font-size: 12.5px; }
   .feature .fnums { display: flex; gap: 26px; margin-top: 14px; align-items: baseline; }
@@ -71,7 +74,6 @@
   .feature .fnum .l { font-size: 11px; color: var(--dim-2); text-transform: uppercase; letter-spacing: .07em; }
   .feature .go { float: right; color: var(--orange); font-weight: 600; font-size: 13px; }
 
-  /* twin bars */
   .bars { display: grid; gap: 16px; }
   .barrow .barlabel { font-size: 13px; margin-bottom: 8px; display: flex; justify-content: space-between; font-weight: 500; }
   .barlabel .dim { color: var(--dim); font-variant-numeric: tabular-nums; font-family: var(--mono); }
@@ -80,20 +82,26 @@
   .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 15px; font-size: 12.5px; }
   .legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--dim); }
   .ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-  .insight { margin-top: 15px; font-size: 13.5px; color: var(--dim); line-height: 1.6;
-             border-left: 2px solid var(--orange-deep); padding-left: 14px; }
+  .insight { margin-top: 15px; font-size: 13.5px; color: var(--dim); line-height: 1.6; border-left: 2px solid var(--orange-deep); padding-left: 14px; }
   .insight b { color: var(--text); font-weight: 600; }
 
+  /* mini share bar (token-vs-percent) */
+  .share { display: flex; align-items: center; gap: 9px; min-width: 128px; }
+  .share .track { flex: 1; height: 6px; border-radius: 3px; background: #060607; overflow: hidden; }
+  .share .fill { height: 100%; background: linear-gradient(90deg, var(--orange-deep), var(--orange)); border-radius: 3px; }
+  .share .pct { font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; min-width: 38px; text-align: right; }
+
   table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  th { text-align: right; color: var(--dim-2); font-weight: 600; font-size: 10.5px; text-transform: uppercase;
-       letter-spacing: .08em; padding: 7px 11px; border-bottom: 1px solid var(--line); }
-  th:first-child, td:first-child { text-align: left; }
-  td { padding: 10px 11px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+  th { color: var(--dim-2); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em;
+       padding: 7px 11px; border-bottom: 1px solid var(--line); text-align: right; }
+  th:first-child { text-align: left; }
+  td { padding: 10px 11px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; text-align: right; }
+  td:first-child { text-align: left; }
   tr:last-child td { border-bottom: none; }
-  td.model, td.q { font-family: var(--mono); font-size: 12.5px; }
+  td.model, td.q { font-family: var(--mono); font-size: 12.5px; max-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  th.sharecol, td.sharecol { text-align: left; width: 150px; }
   .cost { color: var(--orange); font-weight: 700; }
 
-  /* session list */
   .slist { display: flex; flex-direction: column; }
   .srow { display: flex; align-items: center; gap: 14px; padding: 13px 6px; border-bottom: 1px solid var(--line-soft);
           cursor: pointer; transition: .12s; border-radius: 8px; }
@@ -107,10 +115,21 @@
   .srow .stok { color: var(--dim); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .srow .scost { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--orange); min-width: 64px; text-align: right; }
 
-  /* session detail header */
+  /* weekly */
+  .week { margin-bottom: 14px; }
+  .week .whead { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .week .wlabel { font-size: 15px; font-weight: 650; }
+  .week .wof { color: var(--dim-2); font-size: 12px; }
+  .week .wnums { margin-left: auto; display: flex; gap: 18px; align-items: baseline; }
+  .week .wnums .wc { color: var(--orange); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .week .wnums .wt { color: var(--dim); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+
   .dhead { display: flex; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
   .dhead .dtitle { font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
   .dhead .dsub { color: var(--dim); font-size: 13px; margin-top: 6px; font-family: var(--mono); word-break: break-all; }
+  .dhead .chips { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 12px; color: var(--dim); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 4px 10px; }
+  .chip b { color: var(--orange); font-weight: 700; }
   .dhead .dnums { margin-left: auto; display: flex; gap: 26px; }
   .dnum .n { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .dnum .n.cost { color: var(--orange); }
@@ -119,6 +138,31 @@
   .back:hover { color: var(--orange); }
 
   .loading, .empty { color: var(--dim-2); font-size: 14px; padding: 22px 0; }
+
+  /* usage-limit meters */
+  .meter { margin-bottom: 16px; }
+  .meter .mtop { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .meter .mname { font-size: 16px; font-weight: 650; }
+  .meter .mreset { margin-left: auto; color: var(--dim); font-size: 12.5px; }
+  .meter .mpct { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .meter .mpct .u { font-size: 13px; color: var(--dim-2); font-weight: 600; margin-left: 4px; }
+  .gauge { height: 12px; border-radius: 7px; background: #060607; border: 1px solid var(--line-soft); overflow: hidden; margin: 10px 0 10px; }
+  .gauge .gfill { height: 100%; border-radius: 7px; background: linear-gradient(90deg, var(--orange-deep), var(--orange-bright));
+                  transition: width .5s cubic-bezier(.2,.8,.2,1); }
+  .gauge .gfill.hot { background: linear-gradient(90deg, #e0432c, #ff7a4c); }
+  .meter .msub { color: var(--dim); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .meter .msub b { color: var(--text); font-weight: 600; }
+  .updated { color: var(--dim-2); font-size: 12px; margin-top: 4px; }
+
+  .settings { display: grid; gap: 12px; }
+  .settings .frow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .settings label { font-size: 13px; color: var(--dim); min-width: 168px; }
+  .settings input, .settings select { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
+    padding: 7px 10px; font: 13px var(--mono); width: 150px; }
+  .settings input:focus, .settings select:focus { outline: none; border-color: var(--orange-deep); }
+  .settings .save { background: linear-gradient(180deg, var(--orange-bright), var(--orange-deep)); color: #160c05; border: none;
+    font-weight: 700; padding: 8px 18px; border-radius: 9px; cursor: pointer; width: auto; }
+  .note { color: var(--dim-2); font-size: 12px; line-height: 1.5; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -131,6 +175,11 @@
       <button id="refresh">↻ Rescan</button>
     </div>
   </header>
+  <div class="tabs" id="tabs">
+    <a href="#/" data-tab="all">All time</a>
+    <a href="#/weekly" data-tab="weekly">Weekly</a>
+    <a href="#/limits" data-tab="limits">Usage limits</a>
+  </div>
   <div id="view"><div class="loading">Scanning your transcripts…</div></div>
 </div>
 
@@ -139,26 +188,23 @@ const COLORS = { input: "var(--c-input)", output: "var(--c-output)", cache_read:
 const LABELS = { input: "fresh input", output: "output", cache_read: "cache read", cache_write: "cache write" };
 let DATA = null;
 
-function fmtTokens(n) {
-  if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
-  if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
-  return String(n);
-}
-function fmtMoney(n) {
-  if (n >= 100) return "$" + n.toFixed(0);
-  if (n >= 1) return "$" + n.toFixed(2);
-  return "$" + n.toFixed(3);
-}
-function totalTokens(b) { return b.input + b.output + b.cache_read + b.cache_write; }
-function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+const fmtTokens = n => n >= 1e9 ? (n/1e9).toFixed(2)+"B" : n >= 1e6 ? (n/1e6).toFixed(2)+"M" : n >= 1e3 ? (n/1e3).toFixed(1)+"K" : String(n);
+const fmtMoney = n => n >= 100 ? "$"+n.toFixed(0) : n >= 1 ? "$"+n.toFixed(2) : "$"+n.toFixed(3);
+const totalTokens = b => b.input + b.output + b.cache_read + b.cache_write;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const blank = () => ({ input: 0, output: 0, cache_read: 0, cache_write: 0, cost: 0 });
+const addTo = (a, b) => { for (const k in a) a[k] += b[k]; };
 function fmtDate(iso) {
   if (!iso) return "—";
   try {
     const d = new Date(iso);
-    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + ", " +
-           d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) + ", " + d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
   } catch (e) { return "—"; }
+}
+// a thin token-share bar + percentage
+function shareBar(part, total) {
+  const pct = total ? (part / total * 100) : 0;
+  return `<span class="share"><span class="track"><span class="fill" style="width:${pct.toFixed(1)}%"></span></span><span class="pct">${pct.toFixed(1)}%</span></span>`;
 }
 
 function bar(parts) {
@@ -167,12 +213,11 @@ function bar(parts) {
     `<div class="seg" style="width:${(p.value / sum * 100).toFixed(2)}%;background:${p.color}" title="${p.title}"></div>`).join("")}</div>`;
 }
 
-// twin bars + auto insight for any totals object
 function breakdownBlock(t) {
   const tok = totalTokens(t);
   const kinds = ["input", "output", "cache_read", "cache_write"];
   const tokenParts = kinds.map(k => ({ value: t[k], color: COLORS[k], title: `${LABELS[k]}: ${fmtTokens(t[k])}` }));
-  const costBy = { input: t.input * 5 / 1e6, output: t.output * 25 / 1e6, cache_read: t.cache_read * 0.5 / 1e6, cache_write: t.cache_write * 7 / 1e6 };
+  const costBy = { input: t.input*5/1e6, output: t.output*25/1e6, cache_read: t.cache_read*0.5/1e6, cache_write: t.cache_write*7/1e6 };
   const costParts = kinds.map(k => ({ value: costBy[k], color: COLORS[k], title: `${LABELS[k]}: ${fmtMoney(costBy[k])}` }));
   const top = Object.keys(costBy).reduce((a, b) => costBy[a] >= costBy[b] ? a : b);
   const pct = k => (costBy[k] / (t.cost || 1) * 100).toFixed(0);
@@ -197,6 +242,33 @@ function breakdownBlock(t) {
     <div class="insight">Cache reads are <b>${readPct}%</b> of these tokens — the cheap repeated stuff. Biggest dollar line: <b>${LABELS[top]}</b> (~<b>${pct(top)}%</b>): ${lever[top]}</div>`;
 }
 
+// ---- week helpers ----
+function weekStartMs(iso) {
+  const d = iso ? new Date(iso) : new Date(0);
+  const x = new Date(d); x.setHours(0, 0, 0, 0);
+  const dow = (x.getDay() + 6) % 7;   // Monday = 0
+  x.setDate(x.getDate() - dow);
+  return x.getTime();
+}
+function weekLabel(ms) {
+  if (ms <= 0) return "Undated";
+  const a = new Date(ms), b = new Date(ms + 6 * 864e5);
+  const f = d => d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  return f(a) + " – " + f(b);
+}
+function buildWeeks() {
+  const m = new Map();
+  DATA.sessions.forEach(s => {
+    const k = weekStartMs(s.started);
+    if (!m.has(k)) m.set(k, { ms: k, sessions: [], totals: blank() });
+    const w = m.get(k);
+    w.sessions.push(s);
+    addTo(w.totals, s.totals);
+  });
+  return [...m.values()].sort((a, b) => b.ms - a.ms);
+}
+
+// ---- views ----
 function renderOverview() {
   const d = DATA, t = d.totals, tok = totalTokens(t);
   const cur = d.sessions.find(s => s.id === d.current_session);
@@ -206,7 +278,7 @@ function renderOverview() {
       <div class="stat"><div class="label">Total spend</div><div class="val" style="color:var(--orange)">${fmtMoney(t.cost)}</div><div class="sub">est. at current rates</div></div>
       <div class="stat"><div class="label">Total tokens</div><div class="val">${fmtTokens(tok)}</div><div class="sub">${d.sessions.length} sessions</div></div>
       <div class="stat"><div class="label">Output</div><div class="val">${fmtTokens(t.output)}</div><div class="sub">the pricey part</div></div>
-      <div class="stat"><div class="label">Cache reads</div><div class="val">${fmtTokens(t.cache_read)}</div><div class="sub">${(t.cache_read / (tok || 1) * 100).toFixed(0)}% of tokens</div></div>
+      <div class="stat"><div class="label">Cache reads</div><div class="val">${fmtTokens(t.cache_read)}</div><div class="sub">${(t.cache_read/(tok||1)*100).toFixed(0)}% of tokens</div></div>
     </div>`;
 
   if (cur) {
@@ -234,7 +306,7 @@ function renderOverview() {
       models.map(m => `<tr><td class="model">${esc(m.model)}</td><td>${fmtTokens(m.output)}</td><td>${fmtTokens(m.cache_read)}</td><td>${fmtTokens(totalTokens(m))}</td><td class="cost">${fmtMoney(m.cost)}</td></tr>`).join("")
     }</tbody></table>` : `<div class="empty">No usage found.</div>`}</div>`;
 
-  html += `<div class="card"><h2>All sessions — pick one to drill in</h2><div class="slist">${
+  html += `<div class="card"><h2>All sessions — share of total tokens</h2><div class="slist">${
     d.sessions.map(s => `
       <div class="srow ${s.id === d.current_session ? "cur" : ""}" onclick="location.hash='#/s/${encodeURIComponent(s.id)}'">
         <span class="smark"></span>
@@ -242,7 +314,8 @@ function renderOverview() {
           <div class="stitle">${esc(s.title)}</div>
           <div class="ssub">${esc(s.project)} · ${fmtDate(s.started)}</div>
         </div>
-        <span class="stok">${fmtTokens(totalTokens(s.totals))} tok</span>
+        ${shareBar(totalTokens(s.totals), tok)}
+        <span class="stok">${fmtTokens(totalTokens(s.totals))}</span>
         <span class="scost">${fmtMoney(s.totals.cost)}</span>
       </div>`).join("")
   }</div></div>`;
@@ -250,44 +323,202 @@ function renderOverview() {
   document.getElementById("view").innerHTML = html;
 }
 
+function renderWeekly() {
+  const d = DATA, allTok = totalTokens(d.totals);
+  const weeks = buildWeeks();
+
+  let html = `<div class="card"><h2>Usage by week — each week's share of all-time tokens</h2>${
+    weeks.map(w => {
+      const wt = totalTokens(w.totals);
+      return `<div style="display:flex;align-items:center;gap:14px;padding:10px 4px;border-bottom:1px solid var(--line-soft)">
+        <div style="flex:1"><b>${weekLabel(w.ms)}</b> <span class="wof">· ${w.sessions.length} session(s)</span></div>
+        ${shareBar(wt, allTok)}
+        <span class="stok" style="min-width:70px;text-align:right">${fmtTokens(wt)}</span>
+        <span class="scost" style="min-width:64px">${fmtMoney(w.totals.cost)}</span>
+      </div>`;
+    }).join("")
+  }</div>`;
+
+  // each week expanded: its sessions, with share of THAT week
+  weeks.forEach(w => {
+    const wt = totalTokens(w.totals);
+    const sess = [...w.sessions].sort((a, b) => totalTokens(b.totals) - totalTokens(a.totals));
+    html += `<div class="card week">
+      <div class="whead">
+        <span class="wlabel">${weekLabel(w.ms)}</span>
+        <div class="wnums"><span class="wc">${fmtMoney(w.totals.cost)}</span><span class="wt">${fmtTokens(wt)} tokens</span></div>
+      </div>
+      <table><thead><tr><th>Session</th><th class="sharecol">Share of week</th><th>Tokens</th><th>Cost</th></tr></thead><tbody>${
+        sess.map(s => `<tr style="cursor:pointer" onclick="location.hash='#/s/${encodeURIComponent(s.id)}'">
+          <td class="q">${esc(s.title)}</td>
+          <td class="sharecol">${shareBar(totalTokens(s.totals), wt)}</td>
+          <td>${fmtTokens(totalTokens(s.totals))}</td>
+          <td class="cost">${fmtMoney(s.totals.cost)}</td></tr>`).join("")
+      }</tbody></table>
+    </div>`;
+  });
+
+  document.getElementById("view").innerHTML = html;
+}
+
 function renderSession(id) {
   const s = DATA.sessions.find(x => x.id === id);
   if (!s) { document.getElementById("view").innerHTML = `<a class="back" href="#/">← Back</a><div class="empty">Session not found.</div>`; return; }
-  const t = s.totals;
+  const t = s.totals, st = totalTokens(t);
   const isCur = s.id === DATA.current_session;
+  const allTok = totalTokens(DATA.totals);
+  const weeks = buildWeeks();
+  const wk = weeks.find(w => w.ms === weekStartMs(s.started));
+  const weekTok = wk ? totalTokens(wk.totals) : st;
 
   let html = `<a class="back" href="#/">← All sessions</a>
     <div class="card">
       <div class="dhead">
         <div>
-          ${isCur ? `<div class="badge" style="margin-bottom:8px;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.08em"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 10px var(--glow)"></span>This session</div>` : ""}
+          ${isCur ? `<div class="badge" style="margin-bottom:8px"><span class="live"></span>This session</div>` : ""}
           <h1 class="dtitle">${esc(s.title)}</h1>
           <div class="dsub">${esc(s.project)} · ${fmtDate(s.started)} · ${esc(s.models.join(", ") || "—")}</div>
+          <div class="chips">
+            <span class="chip"><b>${(st/(weekTok||1)*100).toFixed(1)}%</b> of its week</span>
+            <span class="chip"><b>${(st/(allTok||1)*100).toFixed(1)}%</b> of all-time</span>
+            <span class="chip">${s.turns.length} queries</span>
+          </div>
         </div>
         <div class="dnums">
           <div class="dnum"><div class="n cost">${fmtMoney(t.cost)}</div><div class="l">spent</div></div>
-          <div class="dnum"><div class="n">${fmtTokens(totalTokens(t))}</div><div class="l">tokens</div></div>
+          <div class="dnum"><div class="n">${fmtTokens(st)}</div><div class="l">tokens</div></div>
         </div>
       </div>
     </div>
     <div class="card"><h2>Where this session's budget went</h2>${breakdownBlock(t)}</div>`;
 
-  html += `<div class="card"><h2>Priciest queries in this session</h2>${s.turns.length ? `
-    <table><thead><tr><th>Query</th><th>Output</th><th>Total</th><th>Cost</th></tr></thead><tbody>${
+  html += `<div class="card"><h2>Priciest queries — share of this session's tokens</h2>${s.turns.length ? `
+    <table><thead><tr><th>Query</th><th class="sharecol">Share</th><th>Output</th><th>Total</th><th>Cost</th></tr></thead><tbody>${
       s.turns.map(tn => `<tr>
-        <td class="q" style="max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(tn.prompt)}</td>
-        <td>${fmtTokens(tn.totals.output)}</td><td>${fmtTokens(totalTokens(tn.totals))}</td><td class="cost">${fmtMoney(tn.totals.cost)}</td></tr>`).join("")
+        <td class="q">${esc(tn.prompt)}</td>
+        <td class="sharecol">${shareBar(totalTokens(tn.totals), st)}</td>
+        <td>${fmtTokens(tn.totals.output)}</td>
+        <td>${fmtTokens(totalTokens(tn.totals))}</td>
+        <td class="cost">${fmtMoney(tn.totals.cost)}</td></tr>`).join("")
     }</tbody></table>` : `<div class="empty">No individual queries captured.</div>`}</div>`;
 
   document.getElementById("view").innerHTML = html;
+}
+
+// ---- usage limits ----
+let limitsTimer = null;
+const LCFG_KEY = "fb_limits_v1";
+const DEFCFG = { sessionBudgetM: 300, weeklyBudgetM: 1500, weekDay: 1, weekHour: 0 };
+function getCfg() { try { return Object.assign({}, DEFCFG, JSON.parse(localStorage.getItem(LCFG_KEY) || "{}")); } catch (e) { return { ...DEFCFG }; } }
+function saveCfg(c) { localStorage.setItem(LCFG_KEY, JSON.stringify(c)); }
+
+function fmtCountdown(sec) {
+  sec = Math.max(0, Math.floor(sec));
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
+  return h > 0 ? `${h} hr ${m} min` : `${m} min`;
+}
+function lastWeeklyReset(nowSec, day, hour) {
+  const d = new Date(nowSec * 1000);
+  const r = new Date(d); r.setHours(hour, 0, 0, 0);
+  const diff = (r.getDay() - day + 7) % 7;
+  r.setDate(r.getDate() - diff);
+  if (r.getTime() > d.getTime()) r.setDate(r.getDate() - 7);
+  return r.getTime() / 1000;
+}
+function meterCard(name, used, budgetTok, cost, resetText, resetId, resetAtSec) {
+  const pct = budgetTok ? Math.min(100, used / budgetTok * 100) : 0;
+  const hot = pct >= 85 ? " hot" : "";
+  return `<div class="card meter">
+    <div class="mtop">
+      <span class="mname">${name}</span>
+      <span class="mreset">Resets <span id="${resetId}" data-reset="${resetAtSec}">${resetText}</span></span>
+    </div>
+    <div class="mpct">${pct.toFixed(0)}<span class="u">% used</span></div>
+    <div class="gauge"><div class="gfill${hot}" style="width:${pct.toFixed(1)}%"></div></div>
+    <div class="msub"><b>${fmtTokens(used)}</b> of ${fmtTokens(budgetTok)} tokens · <b>${fmtMoney(cost)}</b> this window</div>
+  </div>`;
+}
+
+async function renderLimits() {
+  const view = document.getElementById("view");
+  view.innerHTML = '<div class="loading">Reading recent usage…</div>';
+  let u;
+  try { u = await (await fetch("/api/usage")).json(); }
+  catch (e) { view.innerHTML = '<div class="empty">Could not load usage.</div>'; return; }
+
+  const cfg = getCfg();
+  const now = u.now, ev = u.events;
+
+  // session: rolling 5-hour window
+  const FIVE = 5 * 3600;
+  const inSess = ev.filter(e => e.t >= now - FIVE);
+  const anchor = inSess.length ? Math.min(...inSess.map(e => e.t)) : now;
+  const sessReset = anchor + FIVE;
+  const sessTok = inSess.reduce((a, e) => a + e.tok, 0);
+  const sessCost = inSess.reduce((a, e) => a + e.cost, 0);
+
+  // weekly: since the configured weekly reset
+  const wkReset = lastWeeklyReset(now, cfg.weekDay, cfg.weekHour);
+  const wkNext = wkReset + 7 * 86400;
+  const inWk = ev.filter(e => e.t >= wkReset);
+  const wkTok = inWk.reduce((a, e) => a + e.tok, 0);
+  const wkCost = inWk.reduce((a, e) => a + e.cost, 0);
+
+  const wkNextDate = new Date(wkNext * 1000);
+  const wkResetText = wkNextDate.toLocaleDateString(undefined, { weekday: "short" }) + " " +
+                      wkNextDate.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  view.innerHTML =
+    meterCard("Current session", sessTok, cfg.sessionBudgetM * 1e6, sessCost, "in " + fmtCountdown(sessReset - now), "sessReset", sessReset) +
+    meterCard("Weekly · all models", wkTok, cfg.weeklyBudgetM * 1e6, wkCost, wkResetText, "weekReset", wkNext) +
+    `<div class="updated">Last updated: just now · rolling 5-hour session window, weekly window since your set reset.</div>
+     <div class="card">
+       <h2>Your plan budgets</h2>
+       <div class="settings">
+         <div class="frow"><label>Session budget (M tokens)</label><input id="sb" type="number" min="1" value="${cfg.sessionBudgetM}"></div>
+         <div class="frow"><label>Weekly budget (M tokens)</label><input id="wb" type="number" min="1" value="${cfg.weeklyBudgetM}"></div>
+         <div class="frow"><label>Weekly reset day</label>
+           <select id="wd">${days.map((d, i) => `<option value="${i}" ${i === cfg.weekDay ? "selected" : ""}>${d}</option>`).join("")}</select>
+           <label style="min-width:auto">at hour</label><input id="wh" type="number" min="0" max="23" value="${cfg.weekHour}" style="width:70px">
+         </div>
+         <div class="frow"><button class="save" id="saveCfg">Save budgets</button></div>
+       </div>
+       <div class="note">This is an estimate from your real token usage measured against the budgets you set — <b>not</b> Anthropic's official limit accounting (their % is computed server-side with their own per-model weighting, which isn't exposed). Set the budgets to your plan's ballpark to make the % meaningful.</div>
+     </div>`;
+
+  document.getElementById("saveCfg").addEventListener("click", () => {
+    saveCfg({
+      sessionBudgetM: Math.max(1, +document.getElementById("sb").value || DEFCFG.sessionBudgetM),
+      weeklyBudgetM: Math.max(1, +document.getElementById("wb").value || DEFCFG.weeklyBudgetM),
+      weekDay: +document.getElementById("wd").value,
+      weekHour: Math.min(23, Math.max(0, +document.getElementById("wh").value || 0)),
+    });
+    renderLimits();
+  });
+
+  // live countdown tick (session shows "in Xh Ym", weekly keeps its date)
+  if (limitsTimer) clearInterval(limitsTimer);
+  limitsTimer = setInterval(() => {
+    const el = document.getElementById("sessReset");
+    if (!el) { clearInterval(limitsTimer); return; }
+    const left = (+el.dataset.reset) - (Date.now() / 1000);
+    el.textContent = "in " + fmtCountdown(left);
+  }, 1000);
+}
+
+function setTab(name) {
+  document.querySelectorAll("#tabs a").forEach(a => a.classList.toggle("active", a.dataset.tab === name));
 }
 
 function route() {
   if (!DATA) return;
   const h = location.hash;
   const m = h.match(/^#\/s\/(.+)$/);
-  if (m) renderSession(decodeURIComponent(m[1]));
-  else renderOverview();
+  if (m) { setTab("all"); renderSession(decodeURIComponent(m[1])); }
+  else if (h === "#/weekly") { setTab("weekly"); renderWeekly(); }
+  else if (h === "#/limits") { setTab("limits"); renderLimits(); }
+  else { setTab("all"); renderOverview(); }
 }
 
 async function load() {

@@ -28,6 +28,7 @@ import os
 import re
 import threading
 import time
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 PORT = 8137
@@ -292,6 +293,17 @@ def _add(bucket, model, u):
     bucket["cost"] += _msg_cost(model, u)
 
 
+def _epoch(iso):
+    if not iso:
+        return 0.0
+    for fmt in ("%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%SZ"):
+        try:
+            return datetime.strptime(iso, fmt).replace(tzinfo=timezone.utc).timestamp()
+        except ValueError:
+            pass
+    return 0.0
+
+
 def _clean_prompt(s):
     # strip command/caveat wrapper tags so query labels read cleanly
     s = re.sub(r"<[^>]+>", " ", s)
@@ -308,6 +320,7 @@ def _scan_one(path):
     started = None
     title = None
     first_real = None  # first genuine user prompt, for a title fallback
+    events = []        # timestamped per-message usage, for the limits meter
     try:
         with open(path, "rb") as fh:
             raw = fh.read()
@@ -360,9 +373,14 @@ def _scan_one(path):
             _add(by_model.setdefault(model, _blank()), model, u)
             if cur is not None:
                 _add(cur["totals"], model, u)
+            cc = u.get("cache_creation") or {}
+            cw = (cc.get("ephemeral_5m_input_tokens", 0) + cc.get("ephemeral_1h_input_tokens", 0)) if cc else u.get("cache_creation_input_tokens", 0)
+            mtok = u.get("input_tokens", 0) + u.get("output_tokens", 0) + u.get("cache_read_input_tokens", 0) + cw
+            events.append({"t": _epoch(o.get("timestamp")), "tok": mtok, "cost": _msg_cost(model, u)})
 
     return {"session": os.path.basename(path)[:-6], "started": started, "title": title,
-            "first_real": first_real, "totals": totals, "by_model": by_model, "turns": turns}
+            "first_real": first_real, "totals": totals, "by_model": by_model,
+            "turns": turns, "events": events}
 
 
 def _scan_cached(path):
@@ -434,6 +452,30 @@ def _scan_tokens():
     return {"totals": grand, "by_model": by_model, "sessions": sessions, "current_session": current}
 
 
+def _usage():
+    """Recent timestamped usage events (last 8 days) for the limits meter."""
+    base = os.path.join(os.path.expanduser("~"), ".claude", "projects")
+    now = time.time()
+    cutoff = now - 8 * 86400
+    events = []
+    if os.path.isdir(base):
+        for proj in os.listdir(base):
+            pdir = os.path.join(base, proj)
+            if not os.path.isdir(pdir):
+                continue
+            for f in os.listdir(pdir):
+                if not f.endswith(".jsonl"):
+                    continue
+                res = _scan_cached(os.path.join(pdir, f))
+                if not res:
+                    continue
+                for e in res.get("events", []):
+                    if e["t"] >= cutoff:
+                        events.append(e)
+    events.sort(key=lambda e: e["t"])
+    return {"now": now, "events": events}
+
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
@@ -482,6 +524,9 @@ class Handler(BaseHTTPRequestHandler):
 
         elif self.path == "/api/tokens":
             self._send_json(_scan_tokens())
+
+        elif self.path == "/api/usage":
+            self._send_json(_usage())
 
         else:
             self._send_json({"error": "not found"}, 404)
