@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FocusBoard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='116' fill='%230a0a0b'/><circle cx='256' cy='256' r='150' fill='none' stroke='%23ff8a4c' stroke-width='34' stroke-linecap='round' stroke-dasharray='726 216' transform='rotate(-58 256 256)'/><circle cx='256' cy='256' r='52' fill='%23ff8a4c'/></svg>" />
 <style>
   :root {
     --bg: #08080a;
@@ -39,8 +40,7 @@
   .wrap { max-width: 760px; margin: 0 auto; }
 
   header { display: flex; align-items: center; gap: 13px; margin-bottom: 22px; }
-  .logo { width: 13px; height: 13px; border-radius: 4px; background: linear-gradient(150deg, var(--orange-bright), var(--orange-deep));
-          box-shadow: 0 0 16px var(--glow); flex: none; }
+  .logo { width: 24px; height: 24px; border-radius: 7px; box-shadow: 0 0 16px var(--glow); flex: none; display: block; }
   header h1 { font-size: 13px; margin: 0; color: var(--dim); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; }
   header .nav { margin-left: auto; }
   header .nav a { font-size: 13px; color: var(--orange); text-decoration: none; font-weight: 600;
@@ -118,7 +118,11 @@
 <body>
 <div class="wrap">
   <header>
-    <span class="logo"></span>
+    <svg class="logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-label="FocusBoard">
+      <rect width="512" height="512" rx="116" fill="#0e0e11"/>
+      <circle cx="256" cy="256" r="150" fill="none" stroke="#ff8a4c" stroke-width="34" stroke-linecap="round" stroke-dasharray="726 216" transform="rotate(-58 256 256)"/>
+      <circle cx="256" cy="256" r="52" fill="#ff8a4c"/>
+    </svg>
     <h1>FocusBoard · stay at the gate</h1>
     <span class="nav"><a href="/tokens">Token X-ray →</a></span>
   </header>

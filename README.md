@@ -1,6 +1,8 @@
 <div align="center">
 
-# FocusBoard
+<img src="logo.svg" alt="FocusBoard" width="440" />
+
+<br />
 
 **A local companion for Claude Code — watch the agent work instead of doom-scrolling, and X-ray exactly where your tokens go.**
 
