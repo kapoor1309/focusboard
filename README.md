@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.svg" alt="FocusBoard" width="440" />
+<img src="focusboard-logo-dark.png" alt="FocusBoard" width="460" />
 
 <br />
 
